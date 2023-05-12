@@ -1,54 +1,60 @@
-import { Component } from 'react';
-import css from '../styles.module.css';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 import Loader from 'components/Loader';
-class ImageGallery extends Component {
-  state = {
-    APIkey: '34491420-8cbbe56c75e64d038cb2665d9',
-    BASEURL: 'https://pixabay.com/api/?q=',
-    error: false,
-    data: [],
-    page: 1,
-    isLoading: false,
-  };
+import css from '../styles.module.css';
 
-  async componentDidUpdate(prevProps, prevState) {
-    const { APIkey, BASEURL, page } = this.state;
-    const { name, renderGallery, perpage } = this.props;
+const APIkey = '34491420-8cbbe56c75e64d038cb2665d9';
+const BASEURL = 'https://pixabay.com/api/?q=';
 
-    if (prevProps.name !== name || prevProps.perpage < perpage) {
-      try {
-        this.setState({ isLoading: true, page: 1 });
-        const response = await axios.get(
-          `${BASEURL}${name}&page=${page}&key=${APIkey}&image_type=photo&orientation=horizontal&per_page=${perpage}`
-        );
-        this.setState({ data: response.data.hits });
-        renderGallery();
-      } catch (error) {
-        console.log(error);
-        this.setState({ error: true });
-      } finally {
-        this.setState({ isLoading: false });
-      }
+const fetchDataName = ({ name, page, perpage }) => {
+  return axios
+    .get(
+      `${BASEURL}${name}&page=${page}&key=${APIkey}&image_type=photo&orientation=horizontal&per_page=${perpage}`
+    )
+    .then(response => response.data.hits);
+};
+
+const ImageGallery = ({ getModalImage, name, renderGallery, perpage }) => {
+  const [error, setError] = useState(false);
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (name.trim() === '') {
+      return;
     }
-  }
+    setIsLoading(true);
+    setPage(1);
+    fetchDataName({ name, perpage, isLoading })
+      .then(responseHits => {
+        setData([...responseHits]);
+        renderGallery();
+      })
+      .catch(error => {
+        console.log(error);
+        setError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [name, page, perpage, renderGallery]);
 
-  render() {
-    const { isLoading, data } = this.state;
-    const { getModalImage } = this.props;
+  return (
+    <ul className={css.ImageGallery} onClick={getModalImage}>
+      {isLoading && <Loader />}
+      <ImageGalleryItem data={data} />
+    </ul>
+  );
+};
 
-    return (
-      <ul className={css.ImageGallery} onClick={getModalImage}>
-        {isLoading && <Loader />}
-        <ImageGalleryItem data={data} />
-      </ul>
-    );
-  }
-  onPropTypes = {
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  };
-}
+ImageGallery.propTypes = {
+  getModalImage: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  renderGallery: PropTypes.func.isRequired,
+  perpage: PropTypes.number.isRequired,
+};
 
 export default ImageGallery;

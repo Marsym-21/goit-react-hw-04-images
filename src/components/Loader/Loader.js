@@ -1,6 +1,6 @@
 import React from 'react';
 import { Blocks } from 'react-loader-spinner';
-const Loader = props => {
+const Loader = () => {
   return (
     <Blocks
       visible={true}

@@ -1,70 +1,64 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from './styles.module.css';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Modal from './Modal';
 
-export class App extends Component {
-  state = {
-    name: '',
-    perpage: 12,
-    hidden: false,
-    image: '',
-    showModal: false,
+export const App = () => {
+  const [name, setName] = useState('');
+  const [perpage, setPerpage] = useState(12);
+  const [image, setImage] = useState('');
+  const [hidden, setHidden] = useState(false);
+  const [showModal, setModal] = useState(false);
+
+  const getNameImage = nameData => {
+    if (name !== nameData) {
+      setName(nameData);
+      setPerpage(12);
+    }
   };
 
-  getNameImage = name => {
-    this.setState(prevState => {
-      if (prevState.name !== name) {
-        return { name, perpage: 12 };
-      }
-    });
+  const renderGallery = () => {
+    setHidden(true);
   };
 
-  renderGallery = () => {
-    this.setState({ hidden: true });
+  const loadMore = () => {
+    setPerpage(s => s + 12);
   };
 
-  loadMore = () => {
-    this.setState(prevState => {
-      return { perpage: prevState.perpage + 12 };
-    });
+  const getModalImage = e => {
+    setImage(e.target.id);
+    setModal(true);
   };
 
-  getModalImage = e => {
-    return this.setState({ image: e.target.id, showModal: true });
+  const closeModal = () => {
+    setModal(false);
   };
 
-  closeModal = () => {
-    return this.setState({ showModal: false });
-  };
+  return (
+    <div className={css.App}>
+      {showModal && <Modal image={image} closeModal={closeModal} />}
+      <Searchbar onSubmit={getNameImage} />
+      <ImageGallery
+        name={name}
+        renderGallery={renderGallery}
+        perpage={perpage}
+        getModalImage={getModalImage}
+      />
+      {hidden && <Button onClick={loadMore} />}
+    </div>
+  );
+};
 
-  render() {
-    const { name, hidden, perpage, image, showModal } = this.state;
-    return (
-      <div className={css.App}>
-        {showModal && <Modal image={image} closeModal={this.closeModal} />}
-        <Searchbar onSubmit={this.getNameImage} />
-        <ImageGallery
-          name={name}
-          renderGallery={this.renderGallery}
-          perpage={perpage}
-          getModalImage={this.getModalImage}
-        />
-        {hidden && <Button onClick={this.loadMore} />}
-      </div>
-    );
-  }
-  onPropTypes = {
-    image: PropTypes.string.isRequired,
-    closeModal: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
-    renderGallery: PropTypes.func.isRequired,
-    perpage: PropTypes.number.isRequired,
-    getModalImage: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
-  };
-}
+// App.propTypes = {
+//   image: PropTypes.string,
+//   closeModal: PropTypes.func,
+//   onClick: PropTypes.func,
+//   getModalImage: PropTypes.func,
+//   name: PropTypes.string,
+//   renderGallery: PropTypes.func,
+//   perpage: PropTypes.number,
+//   onSubmit: PropTypes.func,
+// };

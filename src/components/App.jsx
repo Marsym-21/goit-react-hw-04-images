@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import css from './styles.module.css';
-// import PropTypes from 'prop-types';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
@@ -51,14 +50,3 @@ export const App = () => {
     </div>
   );
 };
-
-// App.propTypes = {
-//   image: PropTypes.string,
-//   closeModal: PropTypes.func,
-//   onClick: PropTypes.func,
-//   getModalImage: PropTypes.func,
-//   name: PropTypes.string,
-//   renderGallery: PropTypes.func,
-//   perpage: PropTypes.number,
-//   onSubmit: PropTypes.func,
-// };

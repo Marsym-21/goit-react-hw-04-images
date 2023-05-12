@@ -1,20 +1,19 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import css from '../styles.module.css';
 
 const Modal = ({ image, closeModal }) => {
-  const handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      closeModal();
-      removeEveListener();
-    }
-  };
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
-
-  const removeEveListener = () => {
-    window.removeEventListener('keydown', handleKeyDown);
-  };
+    window.addEventListener('keydown', e => {
+      if (e.code === 'Escape') {
+        closeModal();
+        removeEveListener();
+      }
+    });
+    const removeEveListener = () => {
+      window.removeEventListener('keydown', e => console.log(e));
+    };
+  }, [closeModal]);
 
   const closeModalOnClick = e => {
     if (e.target === e.currentTarget) {
@@ -29,6 +28,10 @@ const Modal = ({ image, closeModal }) => {
       </div>
     </div>
   );
+};
+Modal.propTypes = {
+  image: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default Modal;

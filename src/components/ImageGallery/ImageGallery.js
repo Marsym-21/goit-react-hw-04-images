@@ -9,9 +9,6 @@ const APIkey = '34491420-8cbbe56c75e64d038cb2665d9';
 const BASEURL = 'https://pixabay.com/api/?q=';
 
 const fetchDataName = ({ name, page, perpage = 12 }) => {
-  console.log(page);
-  console.log(perpage);
-
   return axios
     .get(
       `${BASEURL}${name}&page=${page}&key=${APIkey}&image_type=photo&orientation=horizontal&per_page=${perpage}`
@@ -34,12 +31,11 @@ const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
       .then(responseHits => {
         if (page === 1) {
           setData([...responseHits]);
+          renderGallery();
         }
         if (page > 1) {
           setData(s => [...s, ...responseHits]);
         }
-
-        renderGallery();
       })
       .catch(error => {
         console.log(error);
@@ -49,7 +45,6 @@ const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
         setIsLoading(false);
       });
   }, [name, page, renderGallery]);
-  console.log(data);
 
   return (
     <ul className={css.ImageGallery} onClick={getModalImage}>

@@ -20,7 +20,10 @@ export const App = () => {
   };
 
   const renderGallery = () => {
-    setHidden(true);
+    if (!hidden) {
+      setHidden(true);
+    }
+    console.log(hidden);
   };
 
   const loadMore = () => {

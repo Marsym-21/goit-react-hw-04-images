@@ -9,6 +9,7 @@ export const App = () => {
   const [name, setName] = useState('');
   const [perpage, setPerpage] = useState(12);
   const [image, setImage] = useState('');
+  const [page, setPage] = useState(1);
   const [hidden, setHidden] = useState(false);
   const [showModal, setModal] = useState(false);
 
@@ -16,6 +17,7 @@ export const App = () => {
     if (name !== nameData) {
       setName(nameData);
       setPerpage(12);
+      setPage(1);
     }
   };
 
@@ -24,7 +26,7 @@ export const App = () => {
   };
 
   const loadMore = () => {
-    setPerpage(s => s + 12);
+    setPage(s => s + 1);
   };
 
   const getModalImage = e => {
@@ -41,6 +43,7 @@ export const App = () => {
       {showModal && <Modal image={image} closeModal={closeModal} />}
       <Searchbar onSubmit={getNameImage} />
       <ImageGallery
+        page={page}
         name={name}
         renderGallery={renderGallery}
         perpage={perpage}

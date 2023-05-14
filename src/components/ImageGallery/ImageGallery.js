@@ -44,7 +44,7 @@ const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [name, page, renderGallery]);
+  }, [name, page]);
 
   return (
     <ul className={css.ImageGallery} onClick={getModalImage}>

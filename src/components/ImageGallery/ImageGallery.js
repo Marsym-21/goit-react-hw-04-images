@@ -30,7 +30,7 @@ const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
     }
     setIsLoading(true);
 
-    fetchDataName({ name, page, isLoading })
+    fetchDataName({ name, page })
       .then(responseHits => {
         if (page === 1) {
           setData([...responseHits]);
@@ -48,7 +48,7 @@ const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [name, page, renderGallery, isLoading]);
+  }, [name, page, renderGallery]);
   console.log(data);
 
   return (

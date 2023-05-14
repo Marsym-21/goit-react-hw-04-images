@@ -19,11 +19,11 @@ export const App = () => {
     }
   };
 
-  const renderGallery = () => {
-    if (!hidden) {
+  const renderButton = data => {
+    if (data.length > 0) {
       setHidden(true);
     }
-    console.log(hidden);
+    console.log(data.length);
   };
 
   const loadMore = () => {
@@ -46,7 +46,7 @@ export const App = () => {
       <ImageGallery
         page={page}
         name={name}
-        renderGallery={renderGallery}
+        renderButton={renderButton}
         getModalImage={getModalImage}
       />
       {hidden && <Button onClick={loadMore} />}

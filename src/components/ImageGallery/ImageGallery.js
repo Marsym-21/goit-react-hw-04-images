@@ -19,13 +19,7 @@ const fetchDataName = ({ name, page, perpage = 12 }) => {
     .then(response => response.data.hits);
 };
 
-const ImageGallery = ({
-  getModalImage,
-  name,
-  renderGallery,
-  perpage,
-  page,
-}) => {
+const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

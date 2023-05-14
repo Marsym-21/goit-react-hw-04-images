@@ -20,13 +20,12 @@ const ImageGallery = ({ getModalImage, name, renderButton, page }) => {
   // const [error, setError] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  renderButton(data);
+
   useEffect(() => {
     if (name.trim() === '') {
       return;
     }
     setIsLoading(true);
-
     fetchDataName({ name, page })
       .then(responseHits => {
         if (page === 1) {
@@ -44,7 +43,7 @@ const ImageGallery = ({ getModalImage, name, renderButton, page }) => {
         setIsLoading(false);
       });
   }, [name, page]);
-
+  renderButton(data);
   return (
     <ul className={css.ImageGallery} onClick={getModalImage}>
       {isLoading && <Loader />}

@@ -23,7 +23,9 @@ export const App = () => {
     if (data.length > 0) {
       setHidden(true);
     }
-    console.log(data.length);
+    if (data.length === 0) {
+      setHidden(false);
+    }
   };
 
   const loadMore = () => {

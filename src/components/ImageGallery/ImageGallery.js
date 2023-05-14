@@ -8,7 +8,7 @@ import css from '../styles.module.css';
 const APIkey = '34491420-8cbbe56c75e64d038cb2665d9';
 const BASEURL = 'https://pixabay.com/api/?q=';
 
-const fetchDataName = ({ name, page, perpage }) => {
+const fetchDataName = ({ name, page, perpage = 12 }) => {
   console.log(page);
   console.log(perpage);
 
@@ -28,7 +28,6 @@ const ImageGallery = ({
 }) => {
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
-  // const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -36,9 +35,16 @@ const ImageGallery = ({
       return;
     }
     setIsLoading(true);
-    fetchDataName({ name, page, perpage, isLoading })
+
+    fetchDataName({ name, page, isLoading })
       .then(responseHits => {
-        setData(data => [...data, ...responseHits]);
+        if (page === 1) {
+          setData([...responseHits]);
+        }
+        if (page > 1) {
+          setData(s => [...s, ...responseHits]);
+        }
+
         renderGallery();
       })
       .catch(error => {
@@ -48,7 +54,8 @@ const ImageGallery = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [name, page, perpage, renderGallery]);
+  }, [name, page, renderGallery]);
+  console.log(data);
 
   return (
     <ul className={css.ImageGallery} onClick={getModalImage}>
@@ -62,7 +69,7 @@ ImageGallery.propTypes = {
   getModalImage: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   renderGallery: PropTypes.func.isRequired,
-  perpage: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
 export default ImageGallery;

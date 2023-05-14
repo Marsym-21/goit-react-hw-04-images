@@ -7,7 +7,6 @@ import Modal from './Modal';
 
 export const App = () => {
   const [name, setName] = useState('');
-  const [perpage, setPerpage] = useState(12);
   const [image, setImage] = useState('');
   const [page, setPage] = useState(1);
   const [hidden, setHidden] = useState(false);
@@ -16,7 +15,6 @@ export const App = () => {
   const getNameImage = nameData => {
     if (name !== nameData) {
       setName(nameData);
-      setPerpage(12);
       setPage(1);
     }
   };
@@ -46,7 +44,6 @@ export const App = () => {
         page={page}
         name={name}
         renderGallery={renderGallery}
-        perpage={perpage}
         getModalImage={getModalImage}
       />
       {hidden && <Button onClick={loadMore} />}

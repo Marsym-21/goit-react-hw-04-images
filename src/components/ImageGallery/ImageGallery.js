@@ -20,7 +20,7 @@ const fetchDataName = ({ name, page, perpage = 12 }) => {
 };
 
 const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,12 +43,12 @@ const ImageGallery = ({ getModalImage, name, renderGallery, page }) => {
       })
       .catch(error => {
         console.log(error);
-        setError(true);
+        // setError(true);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [name, page, renderGallery]);
+  }, [name, page, renderGallery, isLoading]);
   console.log(data);
 
   return (
